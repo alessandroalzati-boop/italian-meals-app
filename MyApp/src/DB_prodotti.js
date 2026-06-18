@@ -1,6 +1,14 @@
 export const products = [
-  { id: 1, name: "Spaghetti alla Carbonara" },
-  { id: 2, name: "Lasagne" },
-  { id: 3, name: "Pizza Margherita" },
-  { id: 4, name: "Risotto alla Milanese" },
+  {
+    id: 1,
+    name: "iPhone",
+  },
+  {
+    id: 2,
+    name: "Samsung Galaxy",
+  },
+  {
+    id: 3,
+    name: "Xiaomi",
+  },
 ];
