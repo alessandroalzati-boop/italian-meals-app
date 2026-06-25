@@ -13,3 +13,4 @@ export async function fetchMealById(id: string) {
   const data = await res.json();
   return data.meals?.[0] ?? null;
 }
+

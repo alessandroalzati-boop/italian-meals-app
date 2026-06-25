@@ -1,22 +1,24 @@
-import { View, Text, TextInput, Button, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { useState } from "react";
 import { validateLogin } from "../users";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-export const FAVORITES_KEY = "app:v1:favs";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation }:any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [logedin,setLogedin]=useState("false");
-  
+  const [loggedIn, setLoggedIn] = useState(false);
+
   function Login() {
     const user = validateLogin(email, password);
 
     if (user) {
-      setLogedin("true");  
-      navigation.replace("Home");
+      setLoggedIn(true);
+
+      navigation.replace("Home", {
+        user: user,
+      });
+
     } else {
-      <Text>errore inserimento dati </Text>
+      alert("Email o password errati");
     }
   }
 
@@ -28,11 +30,13 @@ export default function LoginScreen({ navigation }) {
           fontWeight: "bold",
           marginBottom: 20,
           textAlign: "center",
-        }}>
+        }}
+      >
         Login
       </Text>
 
       <Text>Email</Text>
+
       <TextInput
         placeholder="Inserisci email"
         value={email}
@@ -46,6 +50,7 @@ export default function LoginScreen({ navigation }) {
 
 
       <Text>Password</Text>
+
       <TextInput
         placeholder="Inserisci password"
         secureTextEntry
@@ -58,7 +63,11 @@ export default function LoginScreen({ navigation }) {
         }}
       />
 
-      <Pressable onPress={Login()}><Text>Accedi</Text></Pressable>
+
+      <Pressable onPress={Login}>
+        <Text>Accedi</Text>
+      </Pressable>
+
     </View>
   );
 }

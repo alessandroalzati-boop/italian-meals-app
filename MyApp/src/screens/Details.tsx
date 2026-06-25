@@ -1,23 +1,12 @@
 import { View, Text, Button } from "react-native";
 
-export default function Details({ route, navigation }) {
-  const product = route.params?.product;
+export default function Details({ route, navigation }: any) {
 
-  if (!product) {
-    return (
-      <View style={{ padding: 20 }}>
-        <Text>Prodotto non trovato</Text>
-
-        <Button
-          title="Torna alla Home"
-          onPress={() => navigation.navigate("Home")}
-        />
-      </View>
-    );
-  }
+  const id = route.params?.id;
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
+
       <Text
         style={{
           fontSize: 28,
@@ -25,17 +14,18 @@ export default function Details({ route, navigation }) {
           marginBottom: 15,
         }}
       >
-        {product.name}
+        Dettaglio piatto
       </Text>
 
       <Text style={{ fontSize: 18 }}>
-        ID: {product.id}
+        ID: {id}
       </Text>
 
       <Button
         title="Indietro"
         onPress={() => navigation.goBack()}
       />
+
     </View>
   );
 }
