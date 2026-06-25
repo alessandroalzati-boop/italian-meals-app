@@ -8,6 +8,7 @@ import {
   FlatList,
   StyleSheet,
   Pressable,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchItalianMeals } from "../services/mealsApi"; 
@@ -37,6 +38,7 @@ export default function HomeScreen({ navigation }: any) {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={{height:20}}>Piatti italiani</Text>
       {status==="loading"&&<Text>caricamento...</Text>}
       {status==="error"&&<View><Text>caricamento fallito riprova</Text>
       <Pressable onPress={loadMeals}>
@@ -55,6 +57,7 @@ export default function HomeScreen({ navigation }: any) {
               })
             }
           >
+            <Image source={{uri:item.strMealThumb}} style={{width: 200,height: 200,}}/>
             <Text style={styles.text}>{item.strMeal}</Text>
           </TouchableOpacity>
         )}
