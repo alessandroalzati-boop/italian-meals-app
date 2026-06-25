@@ -38,13 +38,14 @@ export default function HomeScreen({ navigation }: any) {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{height:20}}>Piatti italiani</Text>
+      <Text style={{fontSize:32}}>Piatti Italiani</Text>
       {status==="loading"&&<Text>caricamento...</Text>}
       {status==="error"&&<View><Text>caricamento fallito riprova</Text>
       <Pressable onPress={loadMeals}>
         <Text>riprova</Text>
       </Pressable>
       </View>}
+      {status=="success"&&
       <FlatList
         data={meals}
         keyExtractor={(item) => item.idMeal}
@@ -57,11 +58,16 @@ export default function HomeScreen({ navigation }: any) {
               })
             }
           >
-            <Image source={{uri:item.strMealThumb}} style={{width: 200,height: 200,}}/>
+            <View style={styles.row}>
+                <Image source={{uri:item.strMealThumb}} style={{width: 200,height: 200,borderRadius:10}}/>
             <Text style={styles.text}>{item.strMeal}</Text>
+            </View>
+          
           </TouchableOpacity>
         )}
       />
+      }
+      
     </SafeAreaView>
   );
 }
@@ -78,7 +84,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     borderRadius: 8,
   },
-
+ row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
   text: {
     fontSize: 18,
   },
