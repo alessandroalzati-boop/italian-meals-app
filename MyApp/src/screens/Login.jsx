@@ -1,18 +1,18 @@
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, Pressable } from "react-native";
 import { useState } from "react";
-
+import { validateLogin } from "../users";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+function Login() {
+  const user = validateLogin(email, password);
 
-  const handleLogin = () => {
-    if (email === "admin@test.it" && password === "1234") {
-      navigation.replace("Home");
-    } else {
-      alert("Credenziali errate");
-    }
-  };
-
+  if (user) {
+    navigation.replace("Home");
+  } else {
+    alert("Credenziali errate");
+  }
+}
   return (
     <View>
       <Text
@@ -36,6 +36,7 @@ export default function LoginScreen({ navigation }) {
           marginBottom: 15,
         }}
       />
+      
 
       <Text>Password</Text>
       <TextInput
@@ -50,7 +51,7 @@ export default function LoginScreen({ navigation }) {
         }}
       />
 
-      <Button title="Accedi" onPress={handleLogin} />
+      <Pressable  onPress={Login()}><Text>Accedi</Text></Pressable>
     </View>
   );
 }

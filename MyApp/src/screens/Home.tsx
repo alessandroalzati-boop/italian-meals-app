@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchItalianMeals } from "../services/mealsApi"; 
@@ -19,16 +20,29 @@ interface Meal {
 
 export default function HomeScreen({ navigation }: any) {
   const [meals, setMeals] = useState<Meal[]>([]);
+   const [status, setStatus] = useState("loading");
   async function loadMeals() {
-    const data = await fetchItalianMeals();
-    setMeals(data);
-    // console.log(data);
+   
+    try{
+       const data = await fetchItalianMeals();
+       setMeals(data);
+       setStatus("success");
+    }catch{
+       setStatus("error");
+    }
   }
   useEffect(() => {
-    loadMeals();
+  loadMeals();
+   
   }, []);
   return (
     <SafeAreaView style={styles.container}>
+      {status==="loading"&&<Text>caricamento...</Text>}
+      {status==="error"&&<View><Text>caricamento fallito riprova</Text>
+      <Pressable onPress={loadMeals}>
+        <Text>riprova</Text>
+      </Pressable>
+      </View>}
       <FlatList
         data={meals}
         keyExtractor={(item) => item.idMeal}
