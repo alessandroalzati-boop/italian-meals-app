@@ -63,7 +63,7 @@ function toggleFavorite(idMeal: string) {
     <SafeAreaView style={styles.container}>
 
       <Text style={{ fontSize: 24 }}>
-        Ciao {user?.name ?? "utente"}
+        Ciao {user?.name ?? "utente"},
         preferiti:{favoriteIds}
       </Text>
 
