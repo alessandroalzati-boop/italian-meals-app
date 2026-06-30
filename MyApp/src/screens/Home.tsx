@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchItalianMeals } from "../services/mealsApi";
 import { loadFavoriteIds, saveFavoriteIds } from "../services/storage";
+import { useFavorite } from "../context/FavoritesContext";
 interface Meal {
   idMeal: string;
   strMeal: string;
