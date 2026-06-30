@@ -61,10 +61,6 @@ export default function HomeScreen({ navigation, route }: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 24 }}>
-        Ciao {user?.name ?? "utente"}, preferiti:{favoriteIds}
-      </Text>
-
       {user?.avatarUri && (
         <Pressable
           onPress={() =>
