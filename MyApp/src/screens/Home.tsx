@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   FlatList,
   StyleSheet,
@@ -14,7 +15,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchItalianMeals } from "../services/mealsApi";
 import { loadFavoriteIds, saveFavoriteIds } from "../services/storage";
-import { useFavorite } from "../context/FavoritesContext";
 interface Meal {
   idMeal: string;
   strMeal: string;
@@ -25,8 +25,24 @@ export default function HomeScreen({ navigation, route }: any) {
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [favoritesLoaded, setFavoritesLoaded] = useState(false);
   const [meals, setMeals] = useState<Meal[]>([]);
+  const [allMeals, setAllMeals] = useState<Meal[]>([]);
   const [status, setStatus] = useState("loading");
+  const [search, setSearch] = React.useState("");
 
+  function searchPlate() {
+    const q = search.toLowerCase().trim();
+
+    if (!q) {
+      setMeals(allMeals);
+      return;
+    }
+
+    const filtered = allMeals.filter((meal) =>
+      meal.strMeal.toLowerCase().includes(q),
+    );
+
+    setMeals(filtered);
+  }
   // recupero utente passato dal Login
   const user = route.params?.user;
   React.useEffect(() => {
@@ -39,6 +55,7 @@ export default function HomeScreen({ navigation, route }: any) {
     try {
       const data = await fetchItalianMeals();
       setMeals(data);
+      setAllMeals(data);
       setStatus("success");
     } catch {
       setStatus("error");
@@ -82,6 +99,17 @@ export default function HomeScreen({ navigation, route }: any) {
       )}
 
       <Text style={{ fontSize: 32 }}>Piatti Italiani</Text>
+      <View style={styles.search}>
+        <TextInput
+          value={search}
+          onChangeText={setSearch}
+          onSubmitEditing={searchPlate}
+          autoCapitalize="none"
+          placeholder="Cerca un piatto..."
+          placeholderTextColor="#666"
+          style={styles.textInput}
+        />
+      </View>
 
       {status === "loading" && <Text>caricamento...</Text>}
 
@@ -136,6 +164,16 @@ export default function HomeScreen({ navigation, route }: any) {
 }
 
 const styles = StyleSheet.create({
+  search: {
+    marginVertical: 15,
+  },
+
+  textInput: {
+    backgroundColor: "#eee",
+    padding: 12,
+    borderRadius: 10,
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     padding: 16,
