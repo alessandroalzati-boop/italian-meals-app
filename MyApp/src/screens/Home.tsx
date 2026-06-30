@@ -44,12 +44,11 @@ export default function HomeScreen({ navigation, route }: any) {
     }
   }
 
-
   useEffect(() => {
     loadMeals();
   }, []);
 
-function toggleFavorite(idMeal: string) {
+  function toggleFavorite(idMeal: string) {
     setFavoriteIds((current) => {
       const next = current.includes(idMeal)
         ? current.filter((id) => id !== idMeal)
@@ -61,40 +60,37 @@ function toggleFavorite(idMeal: string) {
 
   return (
     <SafeAreaView style={styles.container}>
-
       <Text style={{ fontSize: 24 }}>
-        Ciao {user?.name ?? "utente"},
-        preferiti:{favoriteIds}
+        Ciao {user?.name ?? "utente"}, preferiti:{favoriteIds}
       </Text>
 
       {user?.avatarUri && (
-        <Image
-          source={{ uri: user.avatarUri }}
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 30,
-            marginVertical: 10,
-          }}
-        />
+        <Pressable
+          onPress={() =>
+            navigation.navigate("Profile", {
+              userEmail: user.email,
+            })
+          }
+        >
+          <Image
+            source={{ uri: user.avatarUri }}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 30,
+              marginVertical: 10,
+            }}
+          />
+        </Pressable>
       )}
 
+      <Text style={{ fontSize: 32 }}>Piatti Italiani</Text>
 
-      <Text style={{ fontSize: 32 }}>
-        Piatti Italiani
-      </Text>
-
-
-      {status === "loading" && (
-        <Text>caricamento...</Text>
-      )}
-
+      {status === "loading" && <Text>caricamento...</Text>}
 
       {status === "error" && (
         <View>
-          <Text>
-            caricamento fallito riprova
-          </Text>
+          <Text>caricamento fallito riprova</Text>
 
           <Pressable onPress={loadMeals}>
             <Text>riprova</Text>
@@ -102,28 +98,23 @@ function toggleFavorite(idMeal: string) {
         </View>
       )}
 
-
       {status === "success" && (
         <FlatList
           data={meals}
           keyExtractor={(item) => item.idMeal}
-
           renderItem={({ item }) => {
             const active = favoriteIds.includes(item.idMeal);
 
             return (
               <TouchableOpacity
                 style={styles.item}
-
                 onPress={() =>
                   navigation.navigate("Details", {
                     id: item.idMeal,
                   })
                 }
               >
-
                 <View style={styles.row}>
-
                   <Image
                     source={{ uri: item.strMealThumb }}
                     style={{
@@ -133,39 +124,29 @@ function toggleFavorite(idMeal: string) {
                     }}
                   />
 
-
-                  <Text style={styles.text}>
-                    {item.strMeal}
-                  </Text>
-                  <Pressable 
-                    onPress={() => toggleFavorite(item.idMeal)}
-                  >
+                  <Text style={styles.text}>{item.strMeal}</Text>
+                  <Pressable onPress={() => toggleFavorite(item.idMeal)}>
                     <Text style={styles.favorites}>{active ? "♥" : "♡"}</Text>
                   </Pressable>
                 </View>
-
               </TouchableOpacity>
             );
           }}
         />
-
       )}
-
     </SafeAreaView>
   );
 }
 
-
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     padding: 16,
   },
 
-  favorites:{
-     color:"red",
-     fontSize:50,
+  favorites: {
+    color: "red",
+    fontSize: 50,
   },
 
   item: {
@@ -187,5 +168,4 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
   },
-
 });
