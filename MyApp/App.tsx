@@ -6,26 +6,35 @@ import HomeScreen from "./src/screens/Home";
 import DetailsScreen from "./src/screens/Details";
 import ProfileScreen from "./src/screens/Profile";
 import { FavoriteProvider } from "./src/context/FavoritesContext";
+import { AuthProvider, useAuth } from "./src/context/AuthContext";
 const Stack = createNativeStackNavigator();
+
+function AppNavigator() {
+  const { user } = useAuth();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {user ? (
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+          </>
+        ) : (
+          <Stack.Screen name="Login" component={LoginScreen} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 export default function App() {
   return (
-    <FavoriteProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </FavoriteProvider>
+    <AuthProvider>
+      <FavoriteProvider>
+        <AppNavigator />
+      </FavoriteProvider>
+    </AuthProvider>
   );
 }

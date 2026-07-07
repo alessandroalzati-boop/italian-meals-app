@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchItalianMeals } from "../services/mealsApi";
 import { loadFavoriteIds, saveFavoriteIds } from "../services/storage";
+import { useAuth } from "../context/AuthContext";
 interface Meal {
   idMeal: string;
   strMeal: string;
@@ -28,6 +29,7 @@ export default function HomeScreen({ navigation, route }: any) {
   const [allMeals, setAllMeals] = useState<Meal[]>([]);
   const [status, setStatus] = useState("loading");
   const [search, setSearch] = React.useState("");
+  const { user: authUser } = useAuth();
 
   function searchPlate() {
     const q = search.toLowerCase().trim();
@@ -43,8 +45,7 @@ export default function HomeScreen({ navigation, route }: any) {
 
     setMeals(filtered);
   }
-  // recupero utente passato dal Login
-  const user = route.params?.user;
+  const user = route.params?.user ?? authUser;
   React.useEffect(() => {
     loadFavoriteIds()
       .then(setFavoriteIds)

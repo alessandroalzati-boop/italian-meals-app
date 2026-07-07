@@ -1,22 +1,26 @@
 import { View, Text, TextInput, Pressable } from "react-native";
 import { useState } from "react";
 import { validateLogin } from "../users";
+import { useAuth } from "../context/AuthContext";
 
-export default function LoginScreen({ navigation }:any) {
+export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { login } = useAuth();
 
   function Login() {
     const user = validateLogin(email, password);
 
     if (user) {
-      setLoggedIn(true);
-
-      navigation.replace("Home", {
-        user: user,
+      login({
+        email: user.email,
+        name: user.name,
+        avatarUri: user.avatarUri,
       });
 
+      navigation.replace("Home", {
+        user,
+      });
     } else {
       alert("Email o password errati");
     }
@@ -48,7 +52,6 @@ export default function LoginScreen({ navigation }:any) {
         }}
       />
 
-
       <Text>Password</Text>
 
       <TextInput
@@ -63,11 +66,9 @@ export default function LoginScreen({ navigation }:any) {
         }}
       />
 
-
       <Pressable onPress={Login}>
         <Text>Accedi</Text>
       </Pressable>
-
     </View>
   );
 }
