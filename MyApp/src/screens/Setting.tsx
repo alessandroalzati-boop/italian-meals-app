@@ -16,16 +16,22 @@ export default function SettingsScreen({ navigation }: { navigation: any }) {
         Impostazioni
       </Text>
 
-      <View style={styles.card}>
-        <Text style={[styles.label, isDarkTheme && styles.textDark]}>
-          Tema scuro
-        </Text>
-        <Switch
-          value={isDarkTheme}
-          onValueChange={setIsDarkTheme}
-          thumbColor={isDarkTheme ? "#fff" : "#f4f3f4"}
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-        />
+      <View style={[styles.card, isDarkTheme && styles.cardDark]}>
+        <View style={styles.switchWrapper}>
+          <Text style={[styles.iconLabel, isDarkTheme && styles.textDark]}>
+            ☀️
+          </Text>
+          <Switch
+            value={isDarkTheme}
+            onValueChange={setIsDarkTheme}
+            thumbColor={isDarkTheme ? "#fff" : "#f4f3f4"}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            style={styles.switch}
+          />
+          <Text style={[styles.iconLabel, isDarkTheme && styles.textDark]}>
+            🌙
+          </Text>
+        </View>
       </View>
 
       <Pressable style={styles.logoutButton} onPress={handleLogout}>
@@ -66,8 +72,21 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
   },
-  label: {
-    fontSize: 16,
+  cardDark: {
+    backgroundColor: "#2a2a2a",
+  },
+  switchWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+    width: "100%",
+  },
+  switch: {
+    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+  },
+  iconLabel: {
+    fontSize: 22,
   },
   logoutButton: {
     backgroundColor: "#d9534f",
