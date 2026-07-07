@@ -77,27 +77,29 @@ export default function HomeScreen({ navigation, route }: any) {
     });
   }
 
+  function handleOpenSettings() {
+    navigation.navigate("Settings");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      {user?.avatarUri && (
-        <Pressable
-          onPress={() =>
-            navigation.navigate("Profile", {
-              userEmail: user.email,
-            })
-          }
-        >
-          <Image
-            source={{ uri: user.avatarUri }}
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 30,
-              marginVertical: 10,
-            }}
-          />
+      <View style={styles.headerRow}>
+        {user?.avatarUri && (
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Profile", {
+                userEmail: user.email,
+              })
+            }
+          >
+            <Image source={{ uri: user.avatarUri }} style={styles.avatar} />
+          </Pressable>
+        )}
+
+        <Pressable onPress={handleOpenSettings} style={styles.settingsButton}>
+          <Text style={styles.settingsIcon}>⚙️</Text>
         </Pressable>
-      )}
+      </View>
 
       <Text style={{ fontSize: 32 }}>Piatti Italiani</Text>
       <View style={styles.search}>
@@ -165,6 +167,59 @@ export default function HomeScreen({ navigation, route }: any) {
 }
 
 const styles = StyleSheet.create({
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+
+  settingsWrapper: {
+    position: "relative",
+  },
+
+  settingsButton: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 999,
+  },
+
+  settingsIcon: {
+    fontSize: 20,
+  },
+
+  menuBox: {
+    position: "absolute",
+    top: 48,
+    right: 0,
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
+    minWidth: 100,
+    zIndex: 10,
+  },
+
+  menuItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+  },
+
+  menuText: {
+    color: "#d9534f",
+    fontWeight: "600",
+  },
+
   search: {
     marginVertical: 15,
   },
